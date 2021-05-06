@@ -1,0 +1,39 @@
+{
+  "conditions": [
+    {
+      "name": "ios",
+      "expression": "device.os == 'web'"
+    }
+  ],
+  "parameters": {
+    "welcome_message": {
+      "defaultValue": {
+        "value": "Welcome to photogenix"
+      },
+      "conditionalValues": {
+        "ios": {
+          "value": "Welcome to photogenix"
+        }
+      }
+    },
+    "welcome_message_caps": {
+      "defaultValue": {
+        "value": "false"
+      }
+    },
+    "header_text": {
+      "defaultValue": {
+        "useInAppDefault": true
+      }
+    }
+  },
+  "version": {
+    "versionNumber": "1",
+    "updateTime": "2020-05-14T18:39:38.994Z",
+    "updateUser": {
+      "email": "amandayudaperson@gmail.com"
+    },
+    "updateOrigin": "CONSOLE",
+    "updateType": "INCREMENTAL_UPDATE"
+  }
+}

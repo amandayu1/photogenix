@@ -1,18 +1,21 @@
-
-import './App.css';
 import React from "react";
 import SellerView from "./Components/SellerView";
+import UserProvider from "./providers/UserProvider";
 import UserView from "./Components/UserView";
-import { createMuiTheme, makeStyles, ThemeProvider } from "@material-ui/core";
 
+import "./App.css";
+import {
+  BrowserRouter as Router, Redirect, Route,
+} from 'react-router-dom';
+import { createMuiTheme, makeStyles, ThemeProvider } from "@material-ui/core";
 
 const photogenixTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#47817d'
+      main: '#9AA4EC'
     },
     secondary: {
-      main: '#d08b7f'
+      main: '#f4a4a4'
     },
     checkboxCSS: {
       border: "1px solid red",
@@ -37,10 +40,13 @@ const useStyles = makeStyles({
   }
 });
 
+
 function App() {
   useStyles();
   return (
     <ThemeProvider theme={photogenixTheme}>
+      <UserProvider>
+
         <div className="App">
           <Router>
             <Route
@@ -51,10 +57,12 @@ function App() {
             <SellerView />
             <UserView />
 
+
           </Router>
         </div>
-        </ThemeProvider>
 
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 export default App;
