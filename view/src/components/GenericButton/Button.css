@@ -1,0 +1,36 @@
+.generic-button {
+    background-color:#47817D;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    height: 3em;
+    font-size: 1.125rem;
+    vertical-align: middle;
+    padding: 4px 30px;
+    text-align: center;
+    font-family: 'Assistant', Arial, sans-serif;
+    line-height: 1.5715;
+    position: relative;
+    display: inline-block;
+    font-weight: 400;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    /* -webkit-user-select: none; */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.generic-button:hover {
+    color: #fff;
+    background: #529C97;
+    border: none;
+}
+/* 
+.generic-button:disabled {
+    background: #C5E8BC;
+    cursor: default;
+    color:#4b4b4b;
+
+} */
