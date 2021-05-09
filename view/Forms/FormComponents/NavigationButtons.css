@@ -1,0 +1,36 @@
+.nav-container {
+    padding-top: 2rem;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.back-button-container {
+    display: inline-block;
+    padding-left: 7.5%;
+    font-size: 0.7em;
+    width: auto;
+    text-align: left;
+    /* float: left; */
+    flex: none;
+}
+
+.back-button {
+    color: #755E94;
+    font-size: 1.5em;
+    font-weight: 300;
+}
+
+.next-button-container {
+    display: inline-block;
+    padding-right: 7.5%;
+    font-size: 0.7em;
+    width: 14rem;
+    max-width: 175px;
+    height: 2rem;
+    text-align: right;
+    /* float: right; */
+    flex: none;
+}

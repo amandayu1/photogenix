@@ -80,7 +80,7 @@ class OfferingCreationForm extends Component {
     var { title, caption, amount, currency } = this.state
     const user = auth.currentUser;
 
-    //generates a booking doc with all state variables and user class as validation
+    //generates a booking doc with all state variables and user photo as validation
     try {
       const bookingDoc = await generateBookingDocument(
         user,

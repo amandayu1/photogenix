@@ -23,7 +23,8 @@ const TitleDescStep = (props) => {
                     required
                     handleChange={props.handleTextChange}
                     value={props.title}
-                    className="form-group"
+                    // could be wrong
+                    photoName="form-group"
                     id="title"
                     type="text"
                     autoSize={{ "minRows": "1", "maxRows": "2" }}
@@ -35,7 +36,8 @@ const TitleDescStep = (props) => {
                     labelText="Caption"
                     handleChange={props.handleTextChange}
                     value={props.caption}
-                    className="form-group"
+                    // could be wrong
+                    photoName="form-group"
                     id="caption"
                     type="text"
                     autoSize={{ "minRows": "1", "maxRows": "3" }}

@@ -1,0 +1,7 @@
+.form-body {
+    align-items: center;
+    height: 24rem;
+    display: flex;
+    flex-flow: column nowrap;
+}
+

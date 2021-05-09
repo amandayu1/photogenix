@@ -1,0 +1,20 @@
+.CardsContainer {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  align-self: center;
+  scroll-snap-type: y mandatory;
+  padding-bottom: 5px;
+}
+
+.textDesc{
+  margin-top: 5%;
+}
+
+@media screen and (min-width: 1000px) {
+  .CardsContainer{
+    margin-left: 30%; 
+  } 
+  .textDesc {
+    margin-left: 30%; 
+  }
+}
