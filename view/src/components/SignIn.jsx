@@ -3,26 +3,27 @@ import { auth, signInWithGoogle, generateUserDocument } from "../firebase";
 
 // import "antd/dist/antd.css";
 import { GoogleCircleFilled } from "@ant-design/icons";
-
+import { ReactComponent as Logo } from "../assets/Photogenix.svg";
 import LoadingPage from "./LoadingPage";
-import GenericButton from "./GenericButton/Button";
-
+import "./LandingPage/SignInButton.css";
 const firebaseAuthKey = "firebaseAuthInProgress";
 
 class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true, error: null, 
+      isLoading: true, error: null,
     }
   }
   componentDidMount = () => {
     //this will only work for google auth
     console.log('component is mounting');
-    if (!auth.currentUser) {this.setState({
-      // has user
-      isLoading: false,
-    })}
+    if (!auth.currentUser) {
+      this.setState({
+        // has user
+        isLoading: false,
+      })
+    }
     auth.getRedirectResult().then(function (result) {
       if (result.credential) {
         generateUserDocument(result.user);
@@ -33,7 +34,7 @@ class SignIn extends Component {
     console.log('component has mounted');
 
   };
-  
+
   handleSignIn = () => {
     signInWithGoogle();
     // localStorage.setItem(firebaseAuthKey, "1");
@@ -45,12 +46,12 @@ class SignIn extends Component {
     console.log('Component is rendering');
     console.log(this.state);
 
-    return ( (localStorage.getItem(firebaseAuthKey) === "1") ? (<LoadingPage />) : (
+    return ((localStorage.getItem(firebaseAuthKey) === "1") ? (<LoadingPage />) : (
       <div className="login-body">
         <div className="login">
           <div className="login-items">
             {" "}
- 
+            <Logo width={500} height={100} />{" "}
           </div>
           <div>
             <h2
@@ -61,7 +62,7 @@ class SignIn extends Component {
               }}
               className="login login-items"
             >
-              Grow Your Online<br></br> Photography Business.
+              Grow Your Online<br></br> Photography Studio.
             </h2>
           </div>
           {this.state.error !== null && (
@@ -70,21 +71,21 @@ class SignIn extends Component {
             </div>
           )}
 
-
+          <br></br>
+          <br></br>
           <div>
-            <GenericButton
+
+            <button
+              className='signIn-button'
               onClick={() => {
                 this.redirectToLoading();
               }}
-              content={
-                <div>
-                  <GoogleCircleFilled
-                    style={{ fontSize: "1.5rem", paddingRight:'0.7rem' }}
-                  />
-                  Continue with Google
-                </div>
-              }
-            />
+            >
+                <GoogleCircleFilled
+                  style={{ fontSize: "1.5rem", paddingRight: '0.7rem' }}
+                />
+               Continue with Google
+            </button>
 
           </div>
         </div>

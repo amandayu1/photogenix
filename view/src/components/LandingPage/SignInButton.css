@@ -1,4 +1,4 @@
-.generic-button {
+.signIn-button {
     background-color:#47817D;
     color: white;
     border-radius: 30px;
@@ -22,15 +22,8 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.generic-button:hover {
+.signIn-button:hover {
     color: #fff;
     background: #529C97;
     border: none;
 }
-/* 
-.generic-button:disabled {
-    background: #C5E8BC;
-    cursor: default;
-    color:#4b4b4b;
-
-} */

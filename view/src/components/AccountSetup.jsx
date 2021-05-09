@@ -4,7 +4,7 @@ import { auth, getUserByUsername, generateUserDocument } from "../firebase";
 import { Redirect } from "react-router-dom";
 import 'antd/dist/antd.css';
 import { StepInForm } from "./FormStep";
-import { ReactComponent as LogoIcon } from "../assets/LogoIcon.svg";
+import { ReactComponent as LogoIcon } from "../assets/Photogenix.svg";
 import Button from '@material-ui/core/Button';
 import firebase from "firebase/app";
 import { CircularProgress } from "@material-ui/core";
@@ -73,7 +73,7 @@ const AccountSetup = () => {
 
   return (
     <div>
-      <h1 className="account-setup" style={{ paddingTop: "1.9725rem", fontWeight: "600", color: "#4b4b4b" }}>Nice to meet you, <span style={{ color: "#47817D" }}>{(auth.currentUser.displayName.split(' '))[0] || 'Friend'}!</span></h1>
+      <h1 className="account-setup" style={{ paddingTop: "1.9725rem", fontWeight: "600", color: "#4b4b4b" }}>Nice to meet you, <span style={{ color: "#5060bb" }}>{(auth.currentUser.displayName.split(' '))[0] || 'Friend'}!</span></h1>
       <div
         style={{
           background: `url(${auth.currentUser.photoURL || <LogoIcon />})  no-repeat center center`,
@@ -125,7 +125,7 @@ const AccountSetup = () => {
                 </Button>
 
                 <h4 style={{ margin: "auto", marginTop: '10px', color: "#696969", fontWeight: '300' }}> Want to sign in with a different account?</h4>
-                <h4 style={{ fontWeight: "600", color: "#D08B7F" }} onClick={() => {
+                <h4 style={{ fontWeight: "600", color: "#5060bb" }} onClick={() => {
                   auth.signOut()
                 }}>Click Here</h4>
               </div>

@@ -1,20 +1,34 @@
-import React, { useContext, useState} from "react";
+
+import React, { useContext, useState } from "react";
 import { UserContext } from "../providers/UserProvider";
 import { auth } from "../firebase";
-import { BookingsContainer } from "./BookingsCardContainer"
-import { ReactComponent as LogoIcon } from "../assets/LogoIcon.svg";
+import { PurchasesContainer } from "./CardContainer"
+import { ReactComponent as LogoIcon } from "../assets/logo.svg";
 import 'antd/dist/antd.css';
-import { Button,  IconButton, ListItemIcon, makeStyles, Menu, MenuItem, Paper, Typography } from '@material-ui/core';
+import { Button, CircularProgress, IconButton, ListItemIcon, makeStyles, Menu, MenuItem, Paper, Typography } from '@material-ui/core';
+import { Link } from "react-router-dom";
+import firebase from "firebase/app";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
 
 const ProfilePage = () => {
   //deconstructs fields from the firestore user document that is given through context
-  const { user } = useContext(UserContext);
+  const { user, isStripeEnabled } = useContext(UserContext);
   const { photoURL, displayName, username } = user;
-
+  const [loading, setLoading] = useState(false);
 
   const useStyles = makeStyles((theme) => ({
+    LogOut: {
+      color: theme.palette.primary.main,
+      fontFamily: 'Assistant',
+      fontSize: '1.25rem',
+      display: 'inline-block',
+      marginBottom: '30px',
+      "&:hover": {
+        color: '#55a19c',
+      }
+    },
 
     buttonCreate: {
       marginTop: '30px'
@@ -24,7 +38,7 @@ const ProfilePage = () => {
       fontSize: "1.5rem",
       fontWeight: '600',
       textAlign: 'left',
-      color: '#47817D',
+      color: theme.palette.primary.main,
     },
 
     margin: {
@@ -33,6 +47,10 @@ const ProfilePage = () => {
       marginBottom: '30px',
       marginLeft: '15%',
       textAlign: 'left'
+    },
+
+    hello: {
+      color: 'black'
     },
 
     photo: {
@@ -50,7 +68,7 @@ const ProfilePage = () => {
       fontSize: '70px',
       float: 'right',
       textAlign: 'right',
-      color: '#47817D',
+      color: '#5060bb',
       marginRight: '30px',
     },
 
@@ -65,6 +83,20 @@ const ProfilePage = () => {
       },
     },
 
+    vertIconMobile: {
+      float: 'right',
+      display: 'inline',
+      margin: 0,
+      padding: 0,
+      paddingTop: 7,
+      marginRight: 20,
+    },
+
+    vertIconWeb: {
+      right: 50,
+      position: 'absolute'
+
+    },
 
     menuItem: {
 
@@ -80,13 +112,15 @@ const ProfilePage = () => {
       profileInfo: {
         float: 'left',
         width: '30%',
-        position: 'fixed'
+        position: 'paid'
       },
       margin: {
         marginLeft: '0%',
         textAlign: 'center'
       },
-
+      EditIcon: {
+        display: 'none',
+      },
       photo: {
         background: `url(${photoURL || <LogoIcon />})  no-repeat center center`,
         backgroundSize: "cover",
@@ -118,7 +152,7 @@ const ProfilePage = () => {
       Bottom: {
         float: 'left',
         width: '30%',
-        position: 'fixed'
+        position: 'paid'
       },
 
       buttonCreate: {
@@ -152,6 +186,29 @@ const ProfilePage = () => {
     setAnchorEl(null);
   };
 
+  async function onStripeClick(event) {
+    event.preventDefault();
+    setLoading(true);
+    window.location = 'https://dashboard.stripe.com/login';
+    setLoading(false);
+  }
+
+  function handleStripeClick() {
+    setLoading(true);
+    var getStripeAccountLink = firebase.functions().httpsCallable('getStripeAccountLink')
+
+    getStripeAccountLink({
+      uid: auth.currentUser.uid,
+    })
+      .then((result) => {
+        window.location = result.data.accountLinkURL;
+        console.log(result)
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
 
   return (
     <>
@@ -160,6 +217,7 @@ const ProfilePage = () => {
           <div className={classes.imgStyle}>
             <div className={classes.photo}></div>
           </div>
+
           <div className={classes.Title}>
             <span className={classes.hello}> Hello,&nbsp;</span>
             <span>{displayName}!
@@ -170,22 +228,22 @@ const ProfilePage = () => {
               </IconButton>
             </span>
           </div>
+
+          <div>
+            @{username}
+          </div>
+
         </div>
 
-        <div >
-         @{username}
-        </div>
-        
-
-        <div className={classes.buttonCreate}>
-          
+        <div style={{ paddingTop: "1rem", }} className={classes.buttonCreate} >
+          <Link to="/PhotoCreationForm" >
             <Button
               color="primary"
               variant="contained"
             >
               Add Photo
             </Button>
-
+          </Link>
         </div>
       </div>
 
@@ -198,7 +256,32 @@ const ProfilePage = () => {
       <Paper >
         <Menu anchorOrigin={{ horizontal: 'right', }} transformOrigin={{ horizontal: 'right', }}
           id="long-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
-         
+
+          <MenuItem className={classes.LogOutWeb} onClick={onStripeClick}>
+            <ListItemIcon><CreditCardIcon /></ListItemIcon>
+            {isStripeEnabled ?
+              <Typography styles={classes.menuItem} >
+                {loading ?
+                  <CircularProgress size="1.25rem" color="white" />
+                  :
+                  <>
+                    Stripe Dashboard
+                    </>
+                }
+              </Typography>
+              :
+              <Typography styles={classes.menuItem} onClick={handleStripeClick}>
+                {loading ?
+                  <CircularProgress size="1rem" color="white" />
+                  :
+                  <>
+                    Connect Stripe
+                    </>
+                }
+              </Typography>
+            }
+          </MenuItem>
+
           <MenuItem className={classes.LogOutWeb} onClick={() => { auth.signOut() }} >
             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
             <Typography >
@@ -209,7 +292,7 @@ const ProfilePage = () => {
         </Menu>
       </Paper>
 
-      <BookingsContainer
+      <PurchasesContainer
         uid={auth.currentUser.uid}
         ownerUserName={user.username}
       />

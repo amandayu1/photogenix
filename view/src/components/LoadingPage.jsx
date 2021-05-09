@@ -1,26 +1,27 @@
-import React, {Component} from "react";
-import {ReactComponent as Logo} from '../assets/logo.svg'
+import React, { Component } from "react";
+import { ReactComponent as Logo } from '../assets/logo.svg'
 import { Spin } from 'antd';
 import 'antd/dist/antd.css';
 import { LoadingOutlined } from '@ant-design/icons';
+import classes from '../StripeLoadingStyles.module.css'
 
 //loading page rendered during return from stripe and redirect to stripe as well as loading during sign in 
-class LoadingPage extends Component{
+class LoadingPage extends Component {
     render() {
 
-        const antIcon = <LoadingOutlined style={{ fontSize: 80, color: '#47817D'}} spin />;
+        const antIcon = <LoadingOutlined style={{ fontSize: 80, color: '#5060bb' }} spin />;
 
-        return(
-            <div className = {classes.containerStyle}>
+        return (
+            <div className={classes.containerStyle}>
                 <div>
-                    <Logo/>
+                    <Logo />
                 </div>
 
-                <div className = {classes.padding}>
+                <div className={classes.padding}>
                     <Spin indicator={antIcon} />
                 </div>
 
-                <div className = {classes.textStyle}>
+                <div className={classes.textStyle}>
                     You'll Be Redirected In A Moment...
                 </div>
             </div>

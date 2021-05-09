@@ -3,13 +3,12 @@ import SignIn from "./SignIn";
 import ProfilePage from "./ProfilePage";
 import SignInLoading from "./SignInLoading";
 import AccountSetup from "./AccountSetup";
-import ClassBookingForm from "./ClassBookingForm";
-import ClassDetails from "./ClassDetails";
+import PhotoCreationForm from "./PhotoCreationForm";
+import PhotoDetails from "./PhotoDetails";
 import { UserContext } from "../providers/UserProvider";
 import PrivateRoute from "../router/PrivateRoute";
 import { Switch } from "react-router-dom";
 import StripeReturnPage from "./StripeReturnPage";
-import OfferingCreationForm from "./Forms/OfferingCreationForm";
 
 //creates seller view based on if users are logged in or not
 function SellerView() {
@@ -36,7 +35,7 @@ function SellerView() {
     />);
   }
 
-  //ROUTES ALL THE PAGES FOR THE INSTRUCTOR FLOWS
+  //ROUTES ALL THE PAGES FOR THE SELLER FLOWS
   return (
     <Switch>
       <PrivateRoute
@@ -45,6 +44,14 @@ function SellerView() {
         component={SignIn}
         isAuthenticated={!user}
         redirect={"/ProfilePage"}
+      />
+
+      <PrivateRoute
+        path="/PhotoCreationForm"
+        component={PhotoCreationForm}
+        isAuthenticated={user && isValidated}
+        redirect={user ? "/AccountSetup" : "/SignIn"}
+        isStripeEnabled={isStripeEnabled}
       />
 
       <PrivateRoute
@@ -62,12 +69,24 @@ function SellerView() {
         isAuthenticated={user && isValidated}
         redirect={user ? "/AccountSetup" : "/SignIn"}
       />
-
+      <PrivateRoute
+        exact
+        path="/ProfilePage/photo=:id"
+        component={PhotoDetails}
+        isAuthenticated={user && isValidated}
+      />
       <PrivateRoute
         path="/AccountSetup"
         component={AccountSetup}
         isAuthenticated={user && !isValidated}
         redirect={user ? "/ProfilePage" : "/SignIn"}
+      />
+
+      <PrivateRoute
+        path="/ReturnToPhotogenix"
+        component={StripeReturnPage}
+        isAuthenticated={true}
+        redirect="/SignIn"
       />
 
     </Switch>
