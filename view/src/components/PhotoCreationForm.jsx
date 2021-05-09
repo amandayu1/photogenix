@@ -1,16 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { UserContext } from "../providers/UserProvider";
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
 import { Button, FormControlLabel, makeStyles, Radio, RadioGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, InputAdornment, IconButton } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 import { generatePurchaseDocument, auth } from '../firebase';
-import paid from '../assets/paid.png'
 import { Redirect } from "react-router-dom";
 import { Alert } from '@material-ui/lab';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
+import "./PhotoDetails.css";
+import { storage } from '../firebase';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -33,74 +35,15 @@ function NumberFormatCustom(props) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  form: {
-    padding: theme.spacing(2.5),
-    maxWidth: 800,
-    margin: 'auto',
-    '& > *': {
-      marginBottom: theme.spacing(2)
-    }
-  },
-  title: {
-    textAlign: 'left',
-    color: theme.palette.primary.main,
-    fontSize: '1.5rem',
-    display: 'inline',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonCreate: {
-    marginTop: '20px',
-  },
-  radioButtons: {
-    display: 'block',
-  }, margin: {
-    marginBottom: '20px',
-    marginTop: '10px',
-  },
-  infoIcon: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: '20px',
-    marginBottom: '10px'
-  },
-  exit: {
-    position: 'relative',
-    textAlign: 'left',
-    marginTop: '2.5%',
-    marginLeft: '3%',
-  },
-  flexContainer: {
-    overflow: 'hidden',
-  },
-  addPromo: {
-    fontSize: '16px',
-  },
-  addPromoIcon: {
-    color: theme.palette.primary.main,
-    fontSize: 'x-large',
-    padding: '0'
-  },
-  promoCodeContainer: {
-    marginTop: '20px',
-    display: 'inline-flex',
-    width: '100%'
-  },
-  promoCode: {
-    width: '55%',
-    marginLeft: '3%'
-  },
-  discount: {
-    width: '30%',
-    marginLeft: '3.5%'
-  }
-}));
-
 function PhotoCreationForm({ isStripeEnabled }) {
 
-  const { user } = useContext(UserContext);
-  const { currency } = user;
+    //deconstructs fields from the firestore user document that is given through context
+    const { user } = useContext(UserContext);
+    const { currency, uid } = user;
+
+    const uploadedImage = useRef({});
+    const imageUploader = useRef(null);
+    const [uploadedImageSrc, setUploadedImageSrc] = useState(null);
 
   const [titleValue, setTitleValue] = useState('');
   const [descValue, setDescValue] = useState('');
@@ -115,6 +58,94 @@ function PhotoCreationForm({ isStripeEnabled }) {
   const [numberOfPromos, setNumberOfPromos] = useState(0);
 
   const numberRegex = /^[0-9\b]+$/;
+
+  const useStyles = makeStyles((theme) => ({
+    form: {
+      padding: theme.spacing(2.5),
+      maxWidth: 800,
+      margin: 'auto',
+      '& > *': {
+        marginBottom: theme.spacing(2)
+      }
+    },
+    title: {
+      textAlign: 'left',
+      color: theme.palette.primary.main,
+      fontSize: '1.5rem',
+      display: 'inline',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonCreate: {
+      marginTop: '20px',
+    },
+    radioButtons: {
+      display: 'block',
+    }, margin: {
+      marginBottom: '20px',
+      marginTop: '10px',
+    },
+    infoIcon: {
+      display: 'flex',
+      flexDirection: 'row',
+      marginTop: '20px',
+      marginBottom: '10px'
+    },
+    exit: {
+      position: 'relative',
+      textAlign: 'left',
+      marginTop: '2.5%',
+      marginLeft: '3%',
+    },
+    addPromo: {
+      fontSize: '16px',
+    },
+    addPromoIcon: {
+      color: theme.palette.primary.main,
+      fontSize: 'x-large',
+      padding: '0'
+    },
+    promoCodeContainer: {
+      marginTop: '20px',
+      display: 'inline-flex',
+      width: '100%'
+    },
+    promoCode: {
+      width: '55%',
+      marginLeft: '3%'
+    },
+    discount: {
+      width: '30%',
+      marginLeft: '3.5%'
+    },
+  input: {
+      display: 'none',
+  },
+  uploadPhotoContainer: {
+      marginTop: "1rem",
+      marginBottom: "2rem",
+  },
+  uploadPhoto: {
+      fontSize: "1rem",
+      color: "#f3b0bfe0",
+      cursor: "pointer",
+      display: 'inline',
+  },
+
+  photo: {
+      background: `url(${uploadedImageSrc })  no-repeat center center`,
+      backgroundSize: "cover",
+      width: '150px',
+      height: '150px',
+      margin: 'auto',
+  },
+  "@media screen and (max-width: 425px)": {
+      photo: {
+          width: '100px',
+          height: '100px'
+      },
+  }
+  }));  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -162,6 +193,19 @@ function PhotoCreationForm({ isStripeEnabled }) {
   const handleRemovePromoCode = index => {
     setPromoCodes(promoCodes.filter(item => item.index !== index));
   };
+
+  const handleImageUpload = e => {
+    const [file] = e.target.files;
+    if (file) {
+        const reader = new FileReader();
+        const { current } = uploadedImage;
+        current.file = file;
+        reader.onload = e => {
+            setUploadedImageSrc(e.target.result)
+        };
+        reader.readAsDataURL(file);
+    }
+};
 
   // this function called when form is submitted
   async function handleSubmit(event) {
@@ -215,13 +259,19 @@ function PhotoCreationForm({ isStripeEnabled }) {
         price.currency = currency.toUpperCase();
       }
 
-      //generates a purchase doc with all state variables and user photo as validation
       try {
-        const purchaseDoc = await generatePurchaseDocument(
-          user, titleValue, descValue || 999, price, promoCodes
-        );
+        // uploads photo
+        if (uploadedImage.current.file) {
+          const snapshot = await storage.ref().child("images/" + uid + "/photo").put(uploadedImage.current.file)
+          let snapshotPhotoURL =  await snapshot.ref.getDownloadURL();
 
+          //generates a purchase doc with all state variables and user photo as validation
+          const purchaseDoc = await generatePurchaseDocument(
+            user, titleValue, descValue || 999, price, promoCodes, snapshotPhotoURL
+          );
+          
         console.log("purchaseDoc: ", purchaseDoc);
+      }
       } catch (err) {
         console.error(err);
         alert("There was an issue with submission, please try again");
@@ -261,14 +311,31 @@ function PhotoCreationForm({ isStripeEnabled }) {
           </DialogActions>
         </Dialog>
       </div>
+
       <div className={classes.form}>
 
         <div className={classes.checkboxGroup}>
-          {/* <Divider component="li"  /> */}
+    
           <div className={classes.title}>
             <b>Add a Photo</b>
           </div>
         </div>
+
+        {/* Upload photo */}
+        <div className={classes.photo}></div>
+
+            <div className={classes.uploadPhotoContainer}>
+                <label htmlFor="profile-img-file" className={classes.uploadPhoto} >Upload Photo</label>
+            </div>
+
+            <input
+                type="file"
+                accept="image/*"
+                className={classes.input}
+                id="profile-img-file"
+                onChange={handleImageUpload}
+                ref={imageUploader}
+            />
 
         <TextField
           value={titleValue}
