@@ -1,23 +1,14 @@
 
 import React, { Component } from "react";
 import { auth, firestore } from "../firebase";
-import ScheduledPhotoCard from "./Card";
+import PhotoCard from "./Card";
 import 'antd/dist/antd.css';
 import "./CardContainer.css";
 
 //This places the center of the first item right in the middle of the screen by default
 
 const cardStyles = {
-    flexShrink: "0",
-    minWidth: "20rem",
-    height: "auto",
-    borderRadius: "10px",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    scrollSnapAlign: "center",
-    paddingLeft: "0.7rem",
-    paddingRight: "0.7rem",
+    marginBottom: 30,
 }
 const emptyStateText = {
     color: '#4B4B4B',
@@ -65,23 +56,20 @@ class PurchasesContainer extends Component {
             .onSnapshot(this.purchaseChanges)
     }
 
-
     componentWillUnmount() {
         this.unsubscribe();
         // unsubscribe from data changes
     }
 
-
     purchaseChanges = (purchasesCollection) => {
         //this is a function to map the array purchasesCollectionRef to components
         try {
-
             //this const will be set as a state piece to be rendered
             const purchaseDocuments = purchasesCollection.docs
                 .map((purchase) => {
                     purchase = purchase.data();
 
-                    return (<ScheduledPhotoCard
+                    return (<PhotoCard
                         ownerName={purchase.ownerName}
                         ownerUserName={this.props.ownerUserName}
                         title={purchase.title}
@@ -93,6 +81,7 @@ class PurchasesContainer extends Component {
                         isPublic={(auth.currentUser && auth.currentUser.uid === purchase.ownerID) ? false : true}
                         price={purchase.price}
                         stripeAccountID={this.props.stripeAccountID}
+                        photoURL={purchase.photoURL}
                     />);
                 });
 
@@ -103,7 +92,6 @@ class PurchasesContainer extends Component {
 
         }
         catch (err) {
-
             console.error(err);
         }
     }
@@ -166,7 +154,6 @@ class PurchasesContainer extends Component {
                     })
                     }
                 </div>
-
 
             </React.Fragment>
 
