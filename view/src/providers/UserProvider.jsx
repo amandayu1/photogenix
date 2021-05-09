@@ -2,17 +2,24 @@ import React, {Component, createContext} from "react";
 import { auth as userAuth, getUserDocument} from "../firebase";
 import firebase from "firebase/app";
 
+
 //creates context of user that can be used in all child components
 export const UserContext = createContext({ 
     user:null,
     updateContext: () => {},
 });
 
+
+
 class UserProvider extends Component {
 
     state={
         user:null,
-   
+        isStripeEnabled: false,
+
+        //We needed something to not re-trigger sign in from the loading page
+        //so we used this variable. Set it to true once the context has been updated,
+        // regardless of the user's login status
         initialized: false
     };
 
@@ -66,8 +73,52 @@ class UserProvider extends Component {
             else {
                 console.log("updating context...");
                 this.updateContext(userAuth);
+
+                //checks if user has charges enabled
+                try {
+                    /* const stripeAccountID = await getStripeAccountID(userAuth.uid);
+                    await this.setState({
+                        stripeAccount: stripeAccountID
+                    }) */
+                    if(!userAuth) {
+                        console.log('user is not logged in');
+                    }
+                    else {
+                        var isStripeDetailsSubmitted = firebase.functions().httpsCallable('retrieveStripeAccountDetails')
+            
+                        const stripeDetails = await isStripeDetailsSubmitted({
+                            uid: userAuth.uid
+                        })
+                        
+                        if(stripeDetails.error) {
+                            this.setState({
+                                isStripeEnabled: false
+                            });
+                        }
+
+                        this.setState({
+                            isStripeEnabled: stripeDetails.data.detailsSubmitted ? stripeDetails.data.detailsSubmitted : false
+                        });
+
+                        console.log("is stripe enabled? ",this.state.isStripeEnabled);
+
+                    }
+
+
+                    
+                }
+                catch (err) {
+                    console.error(err);
+                    console.log('stripe flow has not yet been initiated');
+                    this.setState({
+                        isStripeEnabled: false
+                    })
+
+                }
+                console.log("updated context")
             }
-              
+            
+            
 
         });
 
@@ -79,7 +130,7 @@ class UserProvider extends Component {
             <UserContext.Provider value={{
                 initialized: this.state.initialized,
                 user: this.state.user,
-           
+                isStripeEnabled: this.state.isStripeEnabled,
                 updateContext: this.updateContext}}>
                 {this.props.children}
             </UserContext.Provider>

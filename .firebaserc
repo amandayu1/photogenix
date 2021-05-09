@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "wellifyapp",
+    "staging": "wellifyapp-staging"
+  }
+}

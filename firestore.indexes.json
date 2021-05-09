@@ -1,0 +1,23 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "receipts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "purchaseID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ownerID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "remove",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -12,10 +12,10 @@ import { createMuiTheme, makeStyles, ThemeProvider } from "@material-ui/core";
 const photogenixTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#9AA4EC'
+      main: '#5060bb'
     },
     secondary: {
-      main: '#f4a4a4'
+      main: "#f3b0bfe0", 
     },
     checkboxCSS: {
       border: "1px solid red",

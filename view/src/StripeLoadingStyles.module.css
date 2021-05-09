@@ -1,0 +1,21 @@
+.containerStyle{
+    height: 100vh;
+    width: inherit;
+    display: inline-flex;
+    flex-direction: column;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.textStyle{
+    color: #5060bb;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.padding{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}

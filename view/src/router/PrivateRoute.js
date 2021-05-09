@@ -2,9 +2,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-/*
-DO NOT TOUCH THIS FILE I DONT KNOW HOW OR WHY IT WORKS BUT IT DOES
-*/
+
 const propTypes = {
   isAuthenticated: PropTypes.bool,
   component: PropTypes.func.isRequired,

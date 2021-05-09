@@ -1,5 +1,27 @@
+@import "~antd/dist/antd.css";
+
+@import url(//fonts.googleapis.com/css?family=Assistant:200,300,400,500,600,700);
+
+.ant-input {
+  color: #32325d;
+}
+.ant-input:focus {
+  border-color: #ffffff;
+  outline: 0;
+  -webkit-box-shadow: 0 1px 3px 0 #cfd7df;
+  box-shadow: 0 1px 3px 0#cfd7df;
+}
+.ant-input:hover {
+  border-color: #ffffff;
+  outline: 0;
+  -webkit-box-shadow: 0 1px 3px 0#cfd7df;
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
 .App {
   text-align: center;
+  font-family: "Assistant", Arial, serif;
+  height: 100%;
 }
 
 .App-logo {
@@ -20,13 +42,71 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 2em);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.photogenixtitle {
+  font-size: 2.25em;
+  font-family: Georgia, serif;
+  font-weight: bold;
 }
+
+.form-inline {
+  display: inline;
+  /*flex-flow: row wrap;
+  align-items: center;*/
+  float: left;
+  margin: 0px 15px;
+  width: 100%;
+}
+
+.login-body {
+  height: 100vh;
+  width: 100%;
+  margin-top: 2em;
+  overflow: hidden;
+}
+.login {
+  height: 100%;
+  width: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: space-around;
+  align-content: space-around;
+  font-size: 1.25rem;
+  overflow: hidden;
+}
+
+.login-items {
+  flex: none;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.shadow {
+  border-color: "grey";
+  border-width: 1;
+  overflow: "hidden";
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.account-setup {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+}
+/*.accountInfoForm {
+  display: grid
+  grid-auto-flow: column
+  grid-column-gap: 10px
+} */
+
+/*.App-link {
+  color: #61dafb;
+}*/
 
 @keyframes App-logo-spin {
   from {
@@ -35,4 +115,137 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.input,
+label {
+  display: block;
+}
+
+.label {
+  align-items: left;
+}
+
+.my-button {
+  background-color: #5060bb;
+  border-radius: 30px;
+  border-color: #5060bb;
+  width: 15em;
+  height: 3em;
+  font-size: 1.125rem;
+  display: inline-flex;
+  vertical-align: middle;
+  padding-top: 0.7em;
+  text-align: center;
+  font-family: "Assistant", Arial, sans-serif;
+}
+
+.my-button2:hover {
+  color: #fff;
+  background: #755e94;
+  border-color: #755e94;
+}
+.my-button2:focus {
+  color: #fff;
+  background: #755e94;
+  border-color: #755e94;
+}
+.my-button2 {
+  background-color: #5060bb;
+  border-radius: 50px;
+  border-color: #5060bb;
+  width: 15em;
+  height: 3em;
+  font-size: 18px;
+  vertical-align: middle;
+  /*padding-top: 0.2em;
+  display: inline-flex;*/
+  text-align: center;
+  font-family: "Assistant", Arial, sans-serif;
+}
+
+.my-button3 {
+  background-color: #ff544b;
+  border-radius: 20px;
+  border-color: #ff544b;
+  width: 15em;
+  height: 3em;
+  font-size: 0.7em;
+  display: inline-flex;
+  vertical-align: middle;
+  padding-top: 0.7em;
+  text-align: center;
+  font-family: "Assistant", Arial, sans-serif;
+}
+
+.my-button4 {
+  background-color: #f4c059;
+  border-radius: 20px;
+  border-color: #f4c059;
+  width: 10em;
+  height: 3em;
+  font-size: 18px;
+  vertical-align: middle;
+  /*padding-top: 0.2em;
+  display: inline-flex;*/
+  text-align: center;
+  font-family: "Assistant", Arial, sans-serif;
+}
+
+/*.disabled{}
+          opacity: 0.5;
+        }
+*/
+
+.stripebutton {
+  height: 2.5rem;
+  width: 14.5rem;
+}
+
+.antd-divider {
+  border: 1px solid #e4c2c9;
+}
+
+.text {
+  margin-top: 8%;
+  width: 70%;
+  float: left;
+}
+
+.p-tag {
+  margin-bottom: 0px;
+  color: #4b4b4b;
+  /* font-size: 1.125rem; */
+}
+
+.p-tag2 {
+  margin-bottom: 0px;
+  font-weight: bolder;
+  color: #4b4b4b;
+}
+
+.small-text {
+  font-size: 0.8125rem;
+  color: "#4B4B4B";
+}
+
+.grid-purchase-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.purchase-card-button {
+  background-color: #5060bb;
+  border-radius: 50px;
+  border-color: #5060bb;
+  width: 7em;
+  height: 3em;
+  font-size: 12px;
+  color: white;
+  vertical-align: middle;
+  /*padding-top: 0.2em;
+  display: inline-flex;*/
+  text-align: center;
+  font-family: "Assistant", Arial, sans-serif;
 }
