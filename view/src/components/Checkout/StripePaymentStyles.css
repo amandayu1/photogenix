@@ -1,0 +1,74 @@
+
+
+.StripeElement {
+    height: 40px;
+    width: 100%;
+    color: #32325d;
+    background-color: white;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .card-details-container > .StripeElement  {
+    padding: 10px 12px;
+  }
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+  }
+  
+  .StripeElement--invalid {
+    border-color: #fa755a;
+  }
+  
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+  .payment-form-container {
+    width:auto;
+    align-self: center;
+  }
+
+  .card-details-container {
+    display:block;
+    text-align: left;
+    width: 30rem;
+    max-width: 85vw;
+  }
+
+  .card-details-label {
+    font-weight: 300;
+    font-size: 1rem;
+    font-family: Assistant;
+    color:#000000;
+    padding-bottom: 1rem;
+  }
+
+  .payment-error-container {
+    padding-bottom: 1rem;
+    color: #fa755a;
+    font-size: 0.75rem;
+    margin: auto;
+    font-weight: 500;
+  }
+
+  .payment-request-button {
+    width: 80%;
+    height: auto;
+  }
+
+  @media only screen and (min-width: 800px) {
+    .bookPhotoButton {
+      max-width: 60%;
+    }
+
+    .gridButton {
+      max-width: 61.5%;
+    }
+
+
+}
+
