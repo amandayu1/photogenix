@@ -1,122 +1,174 @@
 import React, { Component } from 'react';
-import { getPhotoDocument } from "../firebase";
+import { deletePurchaseDocument } from "../firebase";
+import { UserContext } from "../providers/UserProvider";
+import BuyerList from "./BuyerList.jsx"
+import PhotoDetailsInfo from "./PhotoDetailsInfo.jsx";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import "./PhotoDetails.css";
-import { getPromoCodes } from '../firebase';
+import { Button, IconButton, Snackbar, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-let eventObject;
-
-class PhotoDetailsInfo extends Component {
+class PhotoDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            photoInfo: { price: {} },
-            descLength: 0,
-            instrLength: 0,
-            descSeeMore: false,
-            instrSeeMore: false,
-            promoCodes: [],
-            photoURL: "",
+            userID: null,
+            purchaseID: null,
+            isDeleted: false,
+            isModalVisible: false,
+            isMenuClosed: null,
+
+            popOpen: false,
+            message: "Sucess",
+            severity: "success",
         }
     }
+    static contextType = UserContext;
     componentDidMount = async () => {
-        this.unsubscribe = getPhotoDocument(this.props.userID, this.props.purchaseID, (photoInfo) => {
 
+        const user = this.context;
+        console.log('ctx', user);
+
+        this.setState({
+            userID: user.user["uid"],
+            purchaseID: this.props.computedMatch.params.id,
+        })
+
+    }
+    redirectToProfilePage = () => {
+        window.location = `/ProfilePage/`;
+    }
+    handleDelete = () => {
+        if (this.state.isDeleted === false) {
             this.setState({
-                photoInfo: photoInfo,
-                descLength: photoInfo.caption.length,
-                photoURL: photoInfo.photoURL,
+                isDeleted: true,
             })
+            deletePurchaseDocument(this.state.purchaseID, this.state.userID).then(() => {
+                this.redirectToProfilePage();
+            })
+            return;
+        }
+        return;
+    }
+    getEmails = (value) => {
+        this.setState({
+            buyerEmails: value,
+        })
+    }
 
-            eventObject = {
-                title: photoInfo.title + " by " + photoInfo.ownerName,
-                caption: "",
-            }
-            if (photoInfo.caption !== "") {
-                eventObject.caption = "Caption:\n" + photoInfo.caption;
-            }
+    showModal = () => {
+        this.handleClose();
+        this.setState({
+            isModalVisible: true,
+        })
+    }
+    handleOk = () => {
+        this.handleClose();
+        this.handleDelete();
+        this.setState({
+            isModalVisible: false,
+        })
+    };
+    handleCancel = () => {
+        this.handleClose();
+        this.setState({
+            isModalVisible: false,
+        })
+    }
+    handlePopClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            popOpen: false,
+        })
+    };
+    handleClick = (event) => {
+        this.setState({
+            isMenuClosed: event.currentTarget,
         });
-        const promoCodes = await getPromoCodes(this.props.userID, this.props.purchaseID);
-        if (promoCodes) {
-            this.setState({
-                promoCodes: promoCodes
-            })
-
-        }
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe()
-    }
-    handleMoreDesc = () => {
+    };
+    handleClose = () => {
         this.setState({
-            descSeeMore: !this.state.descSeeMore
+            isMenuClosed: null,
         })
     };
-    handleMoreInstr = () => {
-        this.setState({
-            instrSeeMore: !this.state.instrSeeMore
-        })
-    };
-    renderPrice = () => {
-        if (this.state.photoInfo.price.type === 'free') {
-            return 'Free'
-        }
-        else {
-            return (
-                '$' + (this.state.photoInfo.price.amount / 100).toFixed(2) + " " + this.state.photoInfo.price.currency
-            );
-        }
-    }
-
     render() {
-
-        const photoInfo = this.state.photoInfo;
+        if (this.state.userID === null) {
+            return null;
+        }
         return (
-            <div>
-                <div className="photo-title">
-                    {photoInfo.title}
+            <>
+                <div className="header">
+                    <Button className="back-to-browse" color="primary" onClick={this.redirectToProfilePage}>
+                        <ArrowBackIosIcon />
+                        <span>Back</span>
+                    </Button>
                 </div>
+                <span className="photo-menu">
+                    <IconButton color="primary" onClick={this.showModal}>
+                        <DeleteIcon fontSize="large" />
+                    </IconButton>
+                </span>
 
-                <img src={this.state.photoInfo.photoURL}
-                    alt="Photo Upload" width="400" height="400"
-                />
-                
-                <div className="photo-price">
-                    {this.renderPrice()}
+                {/* the popup */}
+
+                <Dialog
+                    open={this.state.isModalVisible}
+                    onClose={this.handleCancel}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-caption"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-caption">
+                            By deleting this, you will lose access to
+                            all of the information including the buyers' emails.
+                            It will be your responsibility to reimburse buyers
+                            and notify them of this change.
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleCancel} color="primary">
+                            Cancel
+                    </Button>
+                        <Button onClick={this.handleOk} color="primary" autoFocus>
+                            OK
+                    </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Snackbar
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    open={this.state.popOpen}
+                    onClose={this.handlePopClose}
+                    autoHideDuration={3000}
+                    action={
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.handlePopClose}>
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    }
+                >
+                    <Alert onClose={this.handlePopClose} severity={this.state.severity}>
+                        {this.state.message}
+                    </Alert>
+                </Snackbar>
+                {/* </div> */}
+                <div className="side-padding photo-info">
+                    <PhotoDetailsInfo userID={this.state.userID} purchaseID={this.state.purchaseID} />
                 </div>
-                {photoInfo.caption ?
-                    <>
-                    <div className="section-header">
-                        Caption
-                    </div>
-
-                    <div className="section-text">
-                        {photoInfo["caption"]}
-                    </div>
-
-                    </>
-                    : null}
-
-                { this.state.promoCodes && this.state.promoCodes.length > 0 ?
-                    <>
-                    <div className="section-header">
-                        Promo Codes
-                    </div>
-                        {this.state.promoCodes.map(promo =>
-                            <div className="section-text">
-                                {promo.code} - {promo.discount}% off
-                        </div>
-                        )}
-                    </>
-                    : null
-                }
-
-                <div className="buyer-list-title">
-                    Buyer List
+                <div className="side-padding buyer-list">
+                    <BuyerList
+                        userID={this.state.userID}
+                        purchaseID={this.state.purchaseID}
+                        passEmails={this.getEmails}
+                    />
                 </div>
-            </div>
+            </>
         );
     }
 }
 
-export default PhotoDetailsInfo;
+export default PhotoDetails;

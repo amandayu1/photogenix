@@ -15,6 +15,7 @@ class PhotoDetailsInfo extends Component {
             descSeeMore: false,
             instrSeeMore: false,
             promoCodes: [],
+            photoURL: "",
         }
     }
     componentDidMount = async () => {
@@ -23,6 +24,7 @@ class PhotoDetailsInfo extends Component {
             this.setState({
                 photoInfo: photoInfo,
                 descLength: photoInfo.caption.length,
+                photoURL: photoInfo.photoURL,
             })
 
             eventObject = {
@@ -64,7 +66,6 @@ class PhotoDetailsInfo extends Component {
                 '$' + (this.state.photoInfo.price.amount / 100).toFixed(2) + " " + this.state.photoInfo.price.currency
             );
         }
-
     }
 
     render() {
@@ -76,26 +77,30 @@ class PhotoDetailsInfo extends Component {
                     {photoInfo.title}
                 </div>
 
+                <img src={this.state.photoInfo.photoURL}
+                    alt="Photo Upload" width="400" height="400"
+                />
+                
                 <div className="photo-price">
                     {this.renderPrice()}
                 </div>
                 {photoInfo.caption ?
                     <>
-                        <div className="section-header">
-                            Caption
+                    <div className="section-header">
+                        Caption
                     </div>
 
-                        <div className="section-text">
-                            {photoInfo["caption"]}
-                        </div>
+                    <div className="section-text">
+                        {photoInfo["caption"]}
+                    </div>
 
                     </>
                     : null}
 
                 { this.state.promoCodes && this.state.promoCodes.length > 0 ?
                     <>
-                        <div className="section-header">
-                            Promo Codes
+                    <div className="section-header">
+                        Promo Codes
                     </div>
                         {this.state.promoCodes.map(promo =>
                             <div className="section-text">
