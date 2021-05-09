@@ -30,13 +30,8 @@ const ProfilePage = () => {
       }
     },
 
-    buttonCreate: {
-      marginTop: '30px'
-    },
-
     Title: {
       fontSize: "1.5rem",
-      fontWeight: '600',
       textAlign: 'left',
       color: theme.palette.primary.main,
     },
@@ -45,12 +40,12 @@ const ProfilePage = () => {
       paddingLeft: '15px',
       marginTop: '40px',
       marginBottom: '30px',
-      marginLeft: '15%',
+      marginLeft: '10%',
       textAlign: 'left'
     },
 
     hello: {
-      color: 'black'
+      color: 'black',
     },
 
     photo: {
@@ -60,46 +55,37 @@ const ProfilePage = () => {
       width: "4.5rem",
       borderRadius: "100000px",
       float: 'left',
-      marginRight: '10px',
-      marginBottom: '20px'
-    },
-
-    Circle: {
-      fontSize: '70px',
-      float: 'right',
-      textAlign: 'right',
-      color: '#5060bb',
-      marginRight: '30px',
+      marginLeft: 'auto',
+      marginRight: '50px',
     },
 
     LogOutWeb: {
-      width: 210,
+      width: 200,
+      padding:0,
+      paddingLeft: 10,
+      paddingTop: 8,
+      paddingBottom: 8,
       color: 'rgb(75, 75, 75)',
       fontFamily: 'Assistant',
       fontSize: '1.25rem',
-      margingTop: '35%',
       "&:hover": {
         color: theme.palette.primary.main,
       },
     },
 
     vertIconMobile: {
-      float: 'right',
+      marginRight: '11%',
       display: 'inline',
-      margin: 0,
-      padding: 0,
-      paddingTop: 7,
-      marginRight: 20,
+      float: 'right',
+      paddingTop: 30,
     },
 
     vertIconWeb: {
       right: 50,
       position: 'absolute'
-
     },
 
     menuItem: {
-
       '&:focus': {
         backgroundColor: theme.palette.primary.main,
         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
@@ -107,69 +93,6 @@ const ProfilePage = () => {
         },
       },
     },
-
-    "@media screen and (min-width: 1000px)": {
-      profileInfo: {
-        float: 'left',
-        width: '30%',
-        position: 'paid'
-      },
-      margin: {
-        marginLeft: '0%',
-        textAlign: 'center'
-      },
-      EditIcon: {
-        display: 'none',
-      },
-      photo: {
-        background: `url(${photoURL || <LogoIcon />})  no-repeat center center`,
-        backgroundSize: "cover",
-        height: "150px",
-        width: "150px",
-        borderRadius: "100000px",
-        marginLeft: 'auto',
-        marginRight: '0px'
-      },
-      imgStyle: {
-        width: "inherit",
-        display: "inline-flex",
-        flexDirection: "column",
-        flexFlow: "column wrap",
-        justifyContent: "center",
-        alignItems: "center",
-        alignContent: "center",
-        marginTop: "2em",
-        fontFamily: "Assistant",
-        borderRadius: "88px",
-      },
-      Title: {
-        justifyContent: 'center',
-        width: '100%',
-        display: 'inline-flex',
-        textAlign: 'center',
-      },
-
-      Bottom: {
-        float: 'left',
-        width: '30%',
-        position: 'paid'
-      },
-
-      buttonCreate: {
-        marginBottom: '20px'
-      },
-
-      vertIconMobile: {
-        display: 'none'
-      }
-
-    },
-
-    "@media screen and (max-width: 1000px)": {
-      vertIconWeb: {
-        display: 'none'
-      }
-    }
 
   }));
 
@@ -229,13 +152,12 @@ const ProfilePage = () => {
             </span>
           </div>
 
-          <div>
+          <div className={classes.username}>
             @{username}
           </div>
 
         </div>
 
-        <div style={{ paddingTop: "1rem", }} className={classes.buttonCreate} >
           <Link to="/PhotoCreationForm" >
             <Button
               color="primary"
@@ -245,16 +167,9 @@ const ProfilePage = () => {
             </Button>
           </Link>
         </div>
-      </div>
-
-      <IconButton
-        className={classes.vertIconWeb}
-        aria-label="more" aria-controls="long-menu" aria-haspopup="true" onClick={handleClick} >
-        <MoreVertIcon />
-      </IconButton>
 
       <Paper >
-        <Menu anchorOrigin={{ horizontal: 'right', }} transformOrigin={{ horizontal: 'right', }}
+        <Menu anchorOrigin={{ horizontal: 'right'}} transformOrigin={{ horizontal: 'right' }}
           id="long-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
 
           <MenuItem className={classes.LogOutWeb} onClick={onStripeClick}>

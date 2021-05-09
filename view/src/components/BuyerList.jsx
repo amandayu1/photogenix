@@ -15,6 +15,7 @@ const useStyles = theme => ({
     text: {
         textAlign: 'center',
         paddingTop: '3%',
+        paddingBottom: 100,
     },
     buyerContainer: {
         borderRadius: '5px',
@@ -23,6 +24,7 @@ const useStyles = theme => ({
         marginRight: 'auto',
         display: 'block',
         border: '1px solid #999999',
+        paddingBottom: 100,
     },
     emailText: {
         textAlign: 'left',
@@ -63,7 +65,6 @@ class BuyerList extends Component {
                         <List component="nav" aria-label="contacts">
                             {this.state.buyerEmails.map(receipt =>
                                 <ListItemText className={classes.emailText} primary={receipt.email} />
-
                             )}
 
                         </List>

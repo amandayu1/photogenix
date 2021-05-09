@@ -57,17 +57,7 @@ const useStyles = theme => ({
     marginBottom: "0px",
     width: "70%",
   },
-  "@media screen and (min-width: 1000px)": {
-    profilePageStyle: {
-      width: '100%',
-      marigin: 'auto'
-    },
-    profileStyle: {
-      float: 'left',
-      width: '30%',
-      position: 'paid'
-    },
-  }
+ 
 });
 
 class PublicProfileContainer extends Component {
@@ -163,8 +153,6 @@ class PublicProfileContainer extends Component {
 
     }
 
-
-
     console.log('Rendering default stuff...');
     return (
       <>
@@ -180,13 +168,9 @@ class PublicProfileContainer extends Component {
                   borderRadius: "100000px",
                   marginLeft: 'auto',
                   marginRight: '0px'
-                  //border: 'solid 4px #516245',
-                  //boxShadow: '0 0 0 4px #8FA57F'
                 }}
               ></div>
             </div>
-
-
 
             <div className={classes.itemsStyle}>
 
