@@ -5,6 +5,7 @@ import NumberFormat from 'react-number-format';
 import { Button, FormControlLabel, makeStyles, Radio, RadioGroup, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, InputAdornment, IconButton } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 import { generatePurchaseDocument, auth } from '../firebase';
+import paid from '../assets/paid.png'
 import { Redirect } from "react-router-dom";
 import { Alert } from '@material-ui/lab';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -12,6 +13,7 @@ import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import "./PhotoDetails.css";
+import LogoIcon from "../assets/upload.jpg";
 import { storage } from '../firebase';
 
 function NumberFormatCustom(props) {
@@ -133,7 +135,7 @@ function PhotoCreationForm({ isStripeEnabled }) {
   },
 
   photo: {
-      background: `url(${uploadedImageSrc })  no-repeat center center`,
+      background: `url(${uploadedImageSrc || LogoIcon})  no-repeat center center`,
       backgroundSize: "cover",
       width: '150px',
       height: '150px',
