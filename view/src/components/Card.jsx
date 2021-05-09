@@ -4,22 +4,22 @@ import 'antd/dist/antd.css';
 import { Card } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
+import LogoIcon from "../assets/upload.jpg";
 
 const useStyles = theme => ({
     root: {
-        maxWidth: '600px',
+        maxWidth: '350px',
         margin: 'auto'
     },
     photoCard: {
-        border: '1px solid #f3b0bfe0',
-        borderRadius: '6px',
-        borderWidth: '3px',
-        boxShadow: '0px 4px 9px 4px rgba(243, 176, 191, 0.1)',
-        minHeight: '15rem',
-        maxHeight: '30rem',
+        border: '3px solid #f3b0bfe0',
+        borderRadius: '5px',
+        boxShadow: '0px 2px 5px 2px rgba(243, 176, 191, 0.1)',
+        height: '33em',
         margin: '3% auto',
+        
         "&:hover": {
-            boxShadow: '0px 4px 9px 4px rgba(243, 176, 191, 0.4)'
+            boxShadow: '0px 2px 5px 2px rgba(243, 176, 191, 0.4)'
         },
         "&:active": {
             background: '#F0F0F0'
@@ -29,7 +29,7 @@ const useStyles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        padding: '15px 4%',
+        padding: '15px 10px',
         textAlign: 'left',
         fontFamily: 'Assistant',
     },
@@ -49,13 +49,16 @@ const useStyles = theme => ({
         textOverflow: 'ellipsis',
         display: '-webkit-box',
         "-webkitLineClamp": '2',
-        "-webkitBoxOrient": 'vertical'
+        "-webkitBoxOrient": 'vertical',
+        paddingLeft: 40,
+        paddingTop: 30,
     },
     price: {
         fontSize: '18px',
         color: '#D08B7F',
         fontWeight: '600',
-        float: 'right'
+        float: 'right',
+        paddingRight: 40,
     },
 
     desc: {
@@ -66,11 +69,27 @@ const useStyles = theme => ({
         overflow: 'hidden',
         display: '-webkit-box',
         "-webkitLineClamp": '2',
-        "-webkitBoxOrient": 'vertical'
+        "-webkitBoxOrient": 'vertical',
+        paddingLeft: 40,
+    },
+    photo: {
+      width: '300px',
+      height: '300px',
+      margin: 'auto',
+    },
+
+    "@media screen and (max-width: 425px)": {
+        photo: {
+            width: '200px',
+            height: '200px'
+        },
+        photoCard: {
+            height: '23rem', 
+        },
     }
 });
 
-class ScheduledPhotoCard extends Component {
+class PhotoCard extends Component {
     constructor(props) {
         super(props);
 
@@ -87,6 +106,7 @@ class ScheduledPhotoCard extends Component {
                 isPublic: this.props.isPublic,
                 price: this.props.price,
                 stripeAccountID: this.props.stripeAccountID,
+                photoURL: this.props.photoURL,
             },
             isDeleted: false,
         }
@@ -97,10 +117,6 @@ class ScheduledPhotoCard extends Component {
     requiredFieldsDidMount() {
         if (this.state.cardObj.title) return true;
         return false;
-    }
-
-    componentDidMount = async () => {
-
     }
 
     //deletes this card document
@@ -142,8 +158,14 @@ class ScheduledPhotoCard extends Component {
                     <div className={classes.root}>
                         <Link onClick={() => this.props.purchaseRequestHandler(this.state.cardObj)}>
                             <Card className={classes.photoCard}>
-                                <div className={classes.buyerCard}>
+                                
+                                <div className={classes.photo} style={{ 
+                                    background: `url(${this.state.cardObj.photoURL || LogoIcon})  no-repeat center center`,
+                                    backgroundSize: "cover"}}>
+                                </div>
 
+                                <div className={classes.buyerCard}>
+                                    
                                     <div className={classes.title}>
                                         {this.state.cardObj.title}
                                     </div>
@@ -179,9 +201,12 @@ class ScheduledPhotoCard extends Component {
                     <Link onClick={this.redirectToDetails}>
                         <Card className={classes.photoCard}>
                             <div className={classes.buyerCard}>
-                                <div>
-
+                            
+                            <div className={classes.photo} style={{ 
+                                    background: `url(${this.state.cardObj.photoURL || LogoIcon})  no-repeat center center`,
+                                    backgroundSize: "cover"}}>
                                 </div>
+
                                 <div className={classes.title}>
                                     {this.state.cardObj.title}
                                 </div>
@@ -209,4 +234,4 @@ class ScheduledPhotoCard extends Component {
         )
     }
 }
-export default withStyles(useStyles)(ScheduledPhotoCard);
+export default withStyles(useStyles)(PhotoCard);
