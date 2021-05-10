@@ -112,7 +112,8 @@ export const generatePurchaseDocument = async (
   title,
   caption,
   price,
-  promoCodes
+  promoCodes,
+  newPhotoURL
 ) => {
   //you must supply an seller object for this to work
   if (!seller) return;
@@ -129,7 +130,7 @@ export const generatePurchaseDocument = async (
       ownerID: seller.uid,
       ownerName: seller.displayName,
       price: price,
-
+      photoURL: newPhotoURL,
     });
     promoCodes.forEach(code => {
       let promoCodeRef = firestore

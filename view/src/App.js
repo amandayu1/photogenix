@@ -35,7 +35,10 @@ const useStyles = makeStyles({
   '@global': {
     '.MuiButton-root': {
       borderRadius: 100,
-      textTransform: 'none'
+      textTransform: 'none',
+      padding: 15,
+      paddingRight: 30,
+      paddingLeft: 30,
     }
   }
 });
