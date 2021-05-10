@@ -349,8 +349,8 @@ function generateAccountLink(accountID, origin) {
   return stripe.accountLinks.create({
     type: "account_onboarding",
     account: accountID,
-    refresh_url: `${origin}/ReturnToWellify`,
-    return_url: `${origin}/ReturnToWellify`,
+    refresh_url: `${origin}/ReturnToPhotogenix`,
+    return_url: `${origin}/ReturnToPhotogenix`,
   }).then((link) => link.url);
 }
 
